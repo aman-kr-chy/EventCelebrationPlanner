@@ -4,20 +4,27 @@ import http from 'http';
 import { Server } from 'socket.io';
 import dotenv from 'dotenv';
 
+import { autoSeed } from './utils/autoSeed.js';
+
 dotenv.config();
 
-// Connect to database
-connectDB();
+// Connect to database and seed if empty
+connectDB().then(() => {
+  autoSeed();
+});
 
 const server = http.createServer(app);
 
 // Setup Socket.io
 const io = new Server(server, {
   cors: {
-    origin: [
-      'http://localhost:5173',
-      process.env.FRONTEND_URL,
-    ].filter(Boolean),
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (origin === 'http://localhost:5173') return callback(null, true);
+      if (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL) return callback(null, true);
+      if (origin.endsWith('.vercel.app')) return callback(null, true);
+      callback(new Error('Socket CORS error'));
+    },
     methods: ['GET', 'POST'],
     credentials: true,
   },
