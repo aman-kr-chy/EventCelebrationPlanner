@@ -36,7 +36,7 @@ const Navbar = () => {
               <NavLink to="/venues" className={navLinkClass}>Venues</NavLink>
               <NavLink to="/vendors" className={navLinkClass}>Vendors</NavLink>
               <NavLink to="/events/create" className={navLinkClass}>Plan Event</NavLink>
-              {userInfo && <NavLink to={`/${userInfo.role}/dashboard`} className={navLinkClass}>Dashboard</NavLink>}
+              <NavLink to={userInfo ? `/${userInfo.role}/dashboard` : "/login"} className={navLinkClass}>Dashboard</NavLink>
             </div>
             
             {userInfo ? (
@@ -138,7 +138,7 @@ const Navbar = () => {
             <NavLink to="/venues" onClick={() => setShowMobileMenu(false)} className={({ isActive }) => `${navLinkClass({ isActive })} block`}>Venues</NavLink>
             <NavLink to="/vendors" onClick={() => setShowMobileMenu(false)} className={({ isActive }) => `${navLinkClass({ isActive })} block`}>Vendors</NavLink>
             <NavLink to="/events/create" onClick={() => setShowMobileMenu(false)} className={({ isActive }) => `${navLinkClass({ isActive })} block`}>Plan Event</NavLink>
-            {userInfo && <NavLink to={`/${userInfo.role}/dashboard`} onClick={() => setShowMobileMenu(false)} className={({ isActive }) => `${navLinkClass({ isActive })} block`}>Dashboard</NavLink>}
+            <NavLink to={userInfo ? `/${userInfo.role}/dashboard` : "/login"} onClick={() => setShowMobileMenu(false)} className={({ isActive }) => `${navLinkClass({ isActive })} block`}>Dashboard</NavLink>
           </div>
         )}
       </div>
