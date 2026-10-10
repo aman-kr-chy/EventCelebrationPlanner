@@ -20,7 +20,8 @@ export const getVenues = async (req, res) => {
       if (maxPrice) query.pricePerDay.$lte = Number(maxPrice);
     }
 
-    const venues = await Venue.find(query);
+    const venues = await Venue.find(query).lean();
+    res.setHeader('Cache-Control', 'public, max-age=30, stale-while-revalidate=60');
     res.json(venues);
   } catch (error) {
     res.status(500).json({ message: error.message });

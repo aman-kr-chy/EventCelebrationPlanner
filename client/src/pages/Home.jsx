@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowUp, CalendarHeart, Camera, ChevronRight, MapPin, Sparkles, Users, Wallet } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import api from '../services/api';
-import InteractiveHeroBackground from '../components/InteractiveHeroBackground';
+
+const InteractiveHeroBackground = lazy(() => import('../components/InteractiveHeroBackground'));
 
 const Home = () => {
   const { userInfo } = useSelector((state) => state.auth) || {};
@@ -68,7 +69,9 @@ const Home = () => {
     <div>
       {/* Hero Section */}
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden bg-gray-900">
-        <InteractiveHeroBackground />
+        <Suspense fallback={<div className="absolute inset-0 bg-gray-900" />}>
+          <InteractiveHeroBackground />
+        </Suspense>
         
         {/* Subtle overlay to ensure text is always readable over the 3D canvas */}
         <div className="absolute inset-0 z-0 bg-black/40 pointer-events-none"></div>

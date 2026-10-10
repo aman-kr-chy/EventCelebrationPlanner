@@ -3,13 +3,16 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-// import mongoSanitize from 'express-mongo-sanitize';
+import compression from 'compression';
 import cookieParser from 'cookie-parser';
 
 // Load env vars
 dotenv.config();
 
 const app = express();
+
+// Enable Gzip compression for all HTTP responses
+app.use(compression());
 
 // Middleware
 app.use(express.json());

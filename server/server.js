@@ -47,4 +47,14 @@ const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  
+  // Keep-alive self-ping to prevent Render free instance from going to sleep
+  if (process.env.NODE_ENV === 'production') {
+    const PING_URL = 'https://eventcelebrationplanner.onrender.com/';
+    setInterval(() => {
+      fetch(PING_URL)
+        .then(() => console.log('Keep-alive ping sent successfully'))
+        .catch((err) => console.log('Keep-alive ping error:', err.message));
+    }, 13 * 60 * 1000); // ping every 13 minutes
+  }
 });

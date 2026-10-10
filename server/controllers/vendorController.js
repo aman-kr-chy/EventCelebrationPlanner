@@ -18,7 +18,8 @@ export const getVendors = async (req, res) => {
       if (maxPrice) query.startingPrice.$lte = Number(maxPrice);
     }
 
-    const vendors = await Vendor.find(query).populate('user', 'name profileImage');
+    const vendors = await Vendor.find(query).populate('user', 'name profileImage').lean();
+    res.setHeader('Cache-Control', 'public, max-age=30, stale-while-revalidate=60');
     res.json(vendors);
   } catch (error) {
     res.status(500).json({ message: error.message });
