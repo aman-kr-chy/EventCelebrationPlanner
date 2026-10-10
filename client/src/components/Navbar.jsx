@@ -113,8 +113,8 @@ const Navbar = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex items-center gap-1 sm:gap-2 ml-2 sm:ml-4">
-                <Link to="/login" className="text-gray-600 hover:text-primary font-medium text-sm px-2 sm:px-4 py-2 hidden xs:block">
+              <div className="flex items-center gap-2 sm:gap-3 ml-2 sm:ml-4">
+                <Link to="/login" className="text-gray-600 hover:text-primary font-medium text-sm px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap">
                   Log in
                 </Link>
                 <Link to="/register" className="bg-primary text-white hover:bg-primary-dark px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm whitespace-nowrap">
