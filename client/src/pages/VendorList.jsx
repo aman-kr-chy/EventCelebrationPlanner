@@ -15,9 +15,10 @@ const VendorList = () => {
         setIsLoading(true);
         const queryParams = new URLSearchParams(filters).toString();
         const { data } = await api.get(`/vendors?${queryParams}`);
-        setVendors(data);
+        setVendors(Array.isArray(data) ? data : (data?.vendors || []));
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching vendors:', error);
+        setVendors([]);
       } finally {
         setIsLoading(false);
       }
@@ -113,11 +114,11 @@ const VendorList = () => {
                     {vendor.rating > 0 ? vendor.rating.toFixed(1) : 'New'}
                   </div>
                 </div>
-                <p className="text-primary text-sm font-medium mb-3">{vendor.category}</p>
+                <p className="text-primary text-sm font-medium mb-3">{vendor.category || 'General'}</p>
                 
                 <div className="flex items-center text-gray-500 mb-4 text-sm">
                   <MapPin size={14} className="mr-1.5" />
-                  <span className="truncate">{vendor.location.city}</span>
+                  <span className="truncate">{vendor.location?.city || 'Location not specified'}</span>
                 </div>
                 
                 <div className="mt-auto pt-4 border-t border-gray-50 flex justify-between items-center">
@@ -125,7 +126,7 @@ const VendorList = () => {
                     <p className="text-xs text-gray-500">Starting from</p>
                     <div className="flex items-center text-gray-900 font-bold">
                       <IndianRupee size={14} className="mr-0.5 text-gray-600" />
-                      {vendor.startingPrice.toLocaleString()}
+                      {(vendor.startingPrice || 0).toLocaleString()}
                     </div>
                   </div>
                   <Link 

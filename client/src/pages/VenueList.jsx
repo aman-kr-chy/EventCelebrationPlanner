@@ -16,9 +16,10 @@ const VenueList = () => {
         // Build query string
         const queryParams = new URLSearchParams(filters).toString();
         const { data } = await api.get(`/venues?${queryParams}`);
-        setVenues(data);
+        setVenues(Array.isArray(data) ? data : (data?.venues || []));
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching venues:', error);
+        setVenues([]);
       } finally {
         setIsLoading(false);
       }
@@ -99,20 +100,20 @@ const VenueList = () => {
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2 truncate">{venue.name}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 truncate">{venue.name || 'Unnamed Venue'}</h3>
                 <div className="flex items-center text-gray-500 mb-4 text-sm">
                   <MapPin size={16} className="mr-1" />
-                  <span className="truncate">{venue.location.address}, {venue.location.city}</span>
+                  <span className="truncate">{venue.location?.address ? `${venue.location.address}, ` : ''}{venue.location?.city || 'Location not specified'}</span>
                 </div>
                 
                 <div className="flex justify-between items-center mb-6 pt-4 border-t border-gray-100">
                   <div className="flex items-center text-gray-700">
                     <Users size={18} className="mr-1.5 text-primary" />
-                    <span className="font-medium">Up to {venue.capacity}</span>
+                    <span className="font-medium">Up to {venue.capacity || 0}</span>
                   </div>
                   <div className="flex items-center text-gray-700">
                     <IndianRupee size={18} className="mr-1 text-green-600" />
-                    <span className="font-bold text-lg">{venue.pricePerDay.toLocaleString()} <span className="text-sm font-normal text-gray-500">/ day</span></span>
+                    <span className="font-bold text-lg">{(venue.pricePerDay || 0).toLocaleString()} <span className="text-sm font-normal text-gray-500">/ day</span></span>
                   </div>
                 </div>
                 
